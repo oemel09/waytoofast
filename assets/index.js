@@ -121,6 +121,7 @@ function showAppView() {
     soundToggleImage = document.getElementById("sound-toggle-image");
     document.getElementById("sound-toggle").onclick = toggleSound;
 
+    RangeTouch.setup(document.querySelectorAll("input"));
     speedSlider = document.getElementById("speed-slider");
     speedSlider.value = (Number(speedSlider.max) - Number(speedSlider.min)) / 2 + Number(speedSlider.min);
     speedSlider.oninput = (e) => {

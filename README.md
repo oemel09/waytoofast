@@ -37,3 +37,6 @@ waytoofast
 ### Deploying to a subdirectory
 If the app will be available at a subdirectory, set the PATH_PREFIX environment variable
 and set the `PATH_PREFIX` constant in the `index.js` file.
+
+## Third party libraries
+- [rangetouch](https://github.com/sampotts/rangetouch) to make the sliders work on touch devices
