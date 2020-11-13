@@ -1,0 +1,16 @@
+{{ define "controls" }}
+    <div id="controls">
+        <div id="sound-toggle" class="control-background">
+            <img id="sound-toggle-image" src="{{ . }}/assets/speaker_off.png"
+                 alt="sound" width="32px" height="32px">
+        </div>
+        <div class="control-background">
+            <pre class="slider-label">Speed</pre>
+            <input id="speed-slider" type="range" min="10" max="100" value="50" class="slider">
+        </div>
+        <div class="control-background">
+            <pre class="slider-label">Items</pre>
+            <input id="items-slider" type="range" min="10" max="100" value="50" class="slider">
+        </div>
+    </div>
+{{ end }}

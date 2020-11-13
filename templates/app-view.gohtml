@@ -1,0 +1,15 @@
+{{ define "app-view" }}
+    <div id="app-view" class="hidden">
+        <div id="content-box">
+            <div id="background-box"></div>
+            <div id="videos-box"></div>
+            <div id="images-box"></div>
+            <div id="tweets-box"></div>
+            <div id="sounds-box"></div>
+        </div>
+
+        {{ template "controls" }}
+
+        {{ template "credits" }}
+    </div>
+{{ end }}

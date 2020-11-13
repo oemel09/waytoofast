@@ -1,0 +1,16 @@
+{
+  "apis": {
+    "twitter": {
+      "name": "twitter",
+      "bearer-token": "XXXXXXXXXXX-MyBearerToken-XXXXXXXXXXX"
+    },
+    "pexels": {
+      "name": "pexels",
+      "api-key": "XXXXXXXXXXX-MyApiKey-XXXXXXXXXXX"
+    },
+    "freesound": {
+      "name": "freesound",
+      "api-key": "XXXXXXXXXXX-MyApiKey-XXXXXXXXXXX"
+    }
+  }
+}
