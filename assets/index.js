@@ -211,7 +211,7 @@ class ApiData {
     }
 
     setRotation(element) {
-        element.style.rotate = getRandomInt(-25, 25) + 'deg';
+        element.style.setProperty('--rotation-angle', getRandomInt(-25, 25) + 'deg');
     }
 }
 
@@ -396,7 +396,7 @@ class PopUpVideo extends Video {
         const index = getRandomInt(0, this.videos.length - 1);
         const video = this.videos[index];
         this.videos.splice(index, 1);
-        const videoTag = this.createVideoTag("pop-up-video");
+        const videoTag = this.createVideoTag("pop-up", "pop-up-video");
         const source = this.createVideoSource(video.link);
 
         const randomWidth = getRandomInt(width / 10, width / 4);
@@ -438,7 +438,7 @@ class PopUpImages extends Image {
             const image = this.images[index];
             this.images.splice(index, 1);
             if (image === null) return;
-            const imageTag = this.createImageTag(image.link, "pop-up-image");
+            const imageTag = this.createImageTag(image.link, "pop-up", "pop-up-image");
 
             imageTag.style.animationDuration = getRandomInt(900, 4000) * speedMultiplier + 'ms';
             const randomWidth = getRandomInt(width / 8, width / 4);
@@ -492,7 +492,7 @@ class Tweets extends ApiData {
 
     createTweetTag(tweet) {
         const tweetTag = document.createElement("div");
-        tweetTag.classList.add("tweet");
+        tweetTag.classList.add("pop-up", "pop-up-tweet");
         tweetTag.style.animationDuration = getRandomInt(2000, 6000) * speedMultiplier + 'ms';
         const tweetText = document.createElement("pre");
         tweetText.innerText = tweet.text;

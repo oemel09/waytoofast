@@ -66,6 +66,7 @@ body {
     margin: 3px;
     text-align: center;
 }
+
 .slider-label {
     color: white;
     text-align: center;
@@ -78,6 +79,15 @@ body {
     height: 5px;
     background: white;
     outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 20px;
+    background: #b8860b;
+    cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
@@ -103,35 +113,38 @@ body {
     color: white;
 }
 
-.pop-up-video {
+.pop-up {
     position: absolute;
     border-radius: 15px;
-    box-shadow: inset 0 0 250px black;
 
     opacity: 0;
-    animation-name: anim-videos;
+    animation-name: popup;
     animation-timing-function: linear;
+}
+
+.pop-up-video {
+    box-shadow: inset 0 0 250px black;
+
+    --scale-start: 0;
+    --scale-end: 2;
+    --rotation-angle: 0deg;
 }
 
 .pop-up-image {
-    position: absolute;
-    border-radius: 15px;
     box-shadow: inset 0 0 250px black;
 
-    opacity: 0;
-    animation-name: anim-images;
-    animation-timing-function: linear;
+    --scale-start: 0.5;
+    --scale-end: 1.75;
+    --rotation-angle: 0deg;
 }
 
-.tweet {
-    position: absolute;
+.pop-up-tweet {
     background: rgba(50, 50, 50, 0.3);
     padding: 10px;
-    border-radius: 15px;
 
-    opacity: 0;
-    animation-name: anim-tweets;
-    animation-timing-function: linear;
+    --scale-start: 0.5;
+    --scale-end: 2.5;
+    --rotation-angle: 0deg;
 }
 
 .tweet-text {
@@ -147,44 +160,16 @@ body {
     margin: 0;
 }
 
-@keyframes anim-videos {
+@keyframes popup {
     0% {
-        transform: scale(0);
+        transform: scale(var(--scale-start)) rotate(var(--rotation-angle));
         opacity: 0;
     }
     25%, 80% {
         opacity: 1;
     }
     100% {
-        transform: scale(2);
-        opacity: 0;
-    }
-}
-
-@keyframes anim-images {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    25%, 80% {
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1.75);
-        opacity: 0;
-    }
-}
-
-@keyframes anim-tweets {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    25%, 80% {
-        opacity: 1;
-    }
-    100% {
-        transform: scale(2.5);
+        transform: scale(var(--scale-end)) rotate(var(--rotation-angle));
         opacity: 0;
     }
 }
