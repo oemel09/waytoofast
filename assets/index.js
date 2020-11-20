@@ -28,7 +28,6 @@ let isMuted = true;
 let soundToggleImage, fullscreenToggleImage;
 let speedMultiplier = 1, itemsMultiplier = 1;
 let speedSlider, itemsSlider;
-let isFullscreen = false;
 
 function getRandomInt(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -50,7 +49,6 @@ class Loader {
         fullscreenButton.onclick = () => {
             document.documentElement.requestFullscreen()
                 .then(() => {
-                    isFullscreen = true;
                     fullscreenButton.remove();
                 })
                 .catch(() => console.error("Fullscreen denied"));
@@ -121,18 +119,11 @@ class Loader {
     }
 }
 
-function showAppView() {
-    const loadingView = document.getElementById("loading-view");
-    loadingView.remove();
-    const appView = document.getElementById("app-view");
-    appView.classList.remove(HIDDEN);
-    apiRequests.map(r => r.spawn());
-
+function initAppView() {
     soundToggleImage = document.getElementById("sound-toggle-image");
     document.getElementById("sound-toggle").onclick = toggleSound;
     fullscreenToggleImage = document.getElementById("fullscreen-toggle-image");
     document.getElementById("fullscreen-toggle").onclick = toggleFullscreen;
-    setFullscreenImage();
 
     RangeTouch.setup(document.querySelectorAll("input"));
     speedSlider = document.getElementById("speed-slider");
@@ -144,6 +135,14 @@ function showAppView() {
     itemsSlider = document.getElementById("items-slider");
     itemsSlider.value = (Number(itemsSlider.max) - Number(itemsSlider.min)) / 2 + Number(speedSlider.min);
     itemsSlider.oninput = (e) => itemsMultiplier = onItemsSliderChanged(e);
+}
+
+function showAppView() {
+    const loadingView = document.getElementById("loading-view");
+    loadingView.remove();
+    const appView = document.getElementById("app-view");
+    appView.classList.remove(HIDDEN);
+    apiRequests.map(r => r.spawn());
 }
 
 function toggleSound() {
@@ -166,25 +165,23 @@ function toggleSound() {
 }
 
 function toggleFullscreen() {
-    if (isFullscreen) {
-        document.exitFullscreen()
-            .then(() => {
-                isFullscreen = !isFullscreen;
-                setFullscreenImage();
-            })
-            .catch(() => console.error("Failed to close fullscreen"));
+    if (isFullscreen()) {
+        document.exitFullscreen();
     } else {
-        document.documentElement.requestFullscreen()
-            .then(() => {
-                isFullscreen = !isFullscreen;
-                setFullscreenImage();
-            })
-            .catch(() => console.error("Failed to enter fullscreen"));
+        document.documentElement.requestFullscreen();
     }
 }
 
+function isFullscreen() {
+    return document.fullscreenElement != null;
+}
+
+function fullscreenChanged() {
+    setFullscreenImage()
+}
+
 function setFullscreenImage() {
-    fullscreenToggleImage.src = PATH_PREFIX + "/assets/" + (isFullscreen ? "fullscreen_off.png" : "fullscreen_on.png");
+    fullscreenToggleImage.src = PATH_PREFIX + "/assets/" + (isFullscreen() ? "fullscreen_off.png" : "fullscreen_on.png");
 }
 
 function onSpeedSliderChanged(e) {
@@ -593,6 +590,7 @@ function init() {
     console.log("Hello World!");
 
     isMobile = navigator.userAgent.toLowerCase().includes('mobi');
+    document.onfullscreenchange = fullscreenChanged;
 
     const viewContainer = document.getElementById("view-container");
     width = viewContainer.clientWidth;
@@ -616,6 +614,7 @@ function init() {
     apiRequests.push(new Tweets("tweets", "/twitter"));
     apiRequests.push(new FreeSounds("sounds", "/free-sounds"));
 
+    initAppView();
     loader = new Loader();
     loader.setUpLoadingBar();
 }
