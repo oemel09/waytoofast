@@ -7,6 +7,9 @@ This application shows random real-time tweets from [twitter.com](https://twitte
 and random videos and pictures from [pexels.com](https://www.pexels.com/).  
 If sound is enabled the app plays random sounds from [freesound.org](https://freesound.org/).
 
+## Screenshot
+![Screenshot](screenshot.png)
+
 ## API keys
 To deploy the application by yourself you need to provide a bearer-token of your twitter developer account
 and an API-key for pexels as well as for freesound.
