@@ -24,10 +24,11 @@ let width, height;
 let apiRequests = [];
 let backgroundLoaded = false;
 
-let muted = true;
-let soundToggleImage;
+let isMuted = true;
+let soundToggleImage, fullscreenToggleImage;
 let speedMultiplier = 1, itemsMultiplier = 1;
 let speedSlider, itemsSlider;
+let isFullscreen = false;
 
 function getRandomInt(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -45,6 +46,15 @@ class Loader {
 
         this.progressBar = document.getElementById("loading-progress");
         this.loadingText = document.getElementById("loading-text");
+        const fullscreenButton = document.getElementById("fullscreen-button");
+        fullscreenButton.onclick = () => {
+            document.documentElement.requestFullscreen()
+                .then(() => {
+                    isFullscreen = true;
+                    fullscreenButton.remove();
+                })
+                .catch(() => console.error("Fullscreen denied"));
+        }
     }
 
     setUpLoadingBar() {
@@ -120,6 +130,9 @@ function showAppView() {
 
     soundToggleImage = document.getElementById("sound-toggle-image");
     document.getElementById("sound-toggle").onclick = toggleSound;
+    fullscreenToggleImage = document.getElementById("fullscreen-toggle-image");
+    document.getElementById("fullscreen-toggle").onclick = toggleFullscreen;
+    setFullscreenImage();
 
     RangeTouch.setup(document.querySelectorAll("input"));
     speedSlider = document.getElementById("speed-slider");
@@ -134,22 +147,44 @@ function showAppView() {
 }
 
 function toggleSound() {
-    soundToggleImage.src = PATH_PREFIX + "/assets/" + (muted ? "speaker_on.png" : "speaker_off.png");
-    muted = !muted;
+    soundToggleImage.src = PATH_PREFIX + "/assets/" + (isMuted ? "speaker_on.png" : "speaker_off.png");
+    isMuted = !isMuted;
     document.querySelectorAll("video").forEach(e => {
-        e.muted = muted;
-        if (!muted) {
+        e.muted = isMuted;
+        if (!isMuted) {
             e.play();
         }
     });
     document.querySelectorAll("audio").forEach(e => {
-        e.muted = muted;
-        if (muted) {
+        e.muted = isMuted;
+        if (isMuted) {
             e.pause();
         } else {
             e.play()
         }
     });
+}
+
+function toggleFullscreen() {
+    if (isFullscreen) {
+        document.exitFullscreen()
+            .then(() => {
+                isFullscreen = !isFullscreen;
+                setFullscreenImage();
+            })
+            .catch(() => console.error("Failed to close fullscreen"));
+    } else {
+        document.documentElement.requestFullscreen()
+            .then(() => {
+                isFullscreen = !isFullscreen;
+                setFullscreenImage();
+            })
+            .catch(() => console.error("Failed to enter fullscreen"));
+    }
+}
+
+function setFullscreenImage() {
+    fullscreenToggleImage.src = PATH_PREFIX + "/assets/" + (isFullscreen ? "fullscreen_off.png" : "fullscreen_on.png");
 }
 
 function onSpeedSliderChanged(e) {
@@ -230,7 +265,7 @@ class Video extends ApiData {
         const videoTag = document.createElement("video");
         videoTag.classList.add(...clazz);
         videoTag.autoplay = true;
-        videoTag.muted = muted;
+        videoTag.muted = isMuted;
         videoTag.loop = true;
         return videoTag;
     }
@@ -546,8 +581,8 @@ class FreeSounds extends ApiData {
         const sourceTag = document.createElement("source");
         sourceTag.src = sound.link;
         audioTag.appendChild(sourceTag);
-        audioTag.muted = muted;
-        if (!muted) {
+        audioTag.muted = isMuted;
+        if (!isMuted) {
             audioTag.play();
         }
         return audioTag;

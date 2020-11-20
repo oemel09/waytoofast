@@ -1,15 +1,19 @@
 {{ define "controls" }}
     <div id="controls">
         <script src="https://cdn.rangetouch.com/2.0.1/rangetouch.js"></script>
-        <div id="sound-toggle" class="control-background">
+        <div id="sound-toggle" class="control-background toggle-background">
             <img id="sound-toggle-image" src="{{ . }}/assets/speaker_off.png"
                  alt="sound" width="32px" height="32px">
         </div>
-        <div class="control-background">
+        <div id="fullscreen-toggle" class="control-background toggle-background">
+            <img id="fullscreen-toggle-image" src="{{ . }}/assets/fullscreen_on.png"
+                 alt="fullscreen" width="32px" height="32px">
+        </div>
+        <div class="control-background slider-background">
             <pre class="slider-label">Speed</pre>
             <input id="speed-slider" type="range" min="10" max="100" value="50" class="slider">
         </div>
-        <div class="control-background">
+        <div class="control-background slider-background">
             <pre class="slider-label">Items</pre>
             <input id="items-slider" type="range" min="10" max="100" value="50" class="slider">
         </div>
